@@ -3,10 +3,14 @@ import { supabase } from "@/app/lib/supabase/server";
 export async function POST(request: Request) {
   const kieApiKey = process.env.KIE_API_KEY!;
   const kieBaseUrl = process.env.NEXT_PUBLIC_KIE_BASE_URL!;
+  const callbackBaseUrl = process.env.SB_BASE_URL!;
   const apiUrl = `${kieBaseUrl}/api/v1/jobs/createTask`;
+  const callBackUrl = `${callbackBaseUrl}/api/kie-callback`;
 
   try {
     const body = (await request.json()) as GenerateTaskRequest;
+    body.callBackUrl = callBackUrl;
+
     // prepare request
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${kieApiKey}`);
